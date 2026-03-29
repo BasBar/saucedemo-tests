@@ -1,0 +1,54 @@
+name: Selenium Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        browser: [chrome, edge]
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Start Selenium Grid
+        run: |
+          docker network create grid
+          
+          docker run -d --net grid -p 4444:4444 --name selenium-hub selenium/hub
+          
+          docker run -d --net grid --name chrome-node \
+            -e SE_EVENT_BUS_HOST=selenium-hub \
+            -e SE_EVENT_BUS_PUBLISH_PORT=4442 \
+            -e SE_EVENT_BUS_SUBSCRIBE_PORT=4443 \
+            selenium/node-chrome
+          
+          docker run -d --net grid --name edge-node \
+            -e SE_EVENT_BUS_HOST=selenium-hub \
+            -e SE_EVENT_BUS_PUBLISH_PORT=4442 \
+            -e SE_EVENT_BUS_SUBSCRIBE_PORT=4443 \
+            selenium/node-edge
+
+      - name: Wait for Grid
+        run: sleep 10
+
+      - name: Run tests
+        run: mvn clean test -Dbrowser=${{ matrix.browser }}
+
+      - name: Upload Allure results
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-${{ matrix.browser }}
+          path: target/allure-results
