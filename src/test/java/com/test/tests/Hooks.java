@@ -12,10 +12,6 @@ public class Hooks extends BaseTest {
             takeScreenshot();
         }
 
-        try {
-            if (getDriver() != null) {
-                getDriver().quit();
-            }
-        } catch (Exception ignored) {}
+        cleanUpDriver();
     }
 }

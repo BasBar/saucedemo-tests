@@ -1,31 +1,17 @@
 package com.test.tests;
 
-import com.test.pages.InventoryPage;
-
 import io.cucumber.java.en.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.openqa.selenium.WebDriver;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.*;
 
 public class SortingSteps extends BaseTest {
 
-    private WebDriver driver;
-    private InventoryPage inventoryPage;
-
     @Given("user logs into the application on {string}")
     public void user_logs_into_application(String browser) {
-        System.out.println("THREAD: " + Thread.currentThread().getName() + " | BROWSER: " + browser);
-
         setUp(browser);
-        driver = getDriver();
-
-        driver.get("https://www.saucedemo.com/");
-
         initPages();
         login();
-
-        inventoryPage = new InventoryPage(driver);
     }
 
     @When("user selects {string} sorting option")
@@ -47,6 +33,8 @@ public class SortingSteps extends BaseTest {
 
     private <T extends Comparable<T>> void verifySorting(List<T> actual, String order) {
 
+        assertFalse(actual.isEmpty(), "List should not be empty");
+
         List<T> expected = new ArrayList<>(actual);
 
         if (order.contains("asc")) {
@@ -57,6 +45,6 @@ public class SortingSteps extends BaseTest {
             throw new RuntimeException("Unknown order: " + order);
         }
 
-        assertEquals(expected, actual, "Sorting is incorrect for order: " + order);
+        assertEquals(expected, actual, "Sorting is incorrect: " + order);
     }
 }

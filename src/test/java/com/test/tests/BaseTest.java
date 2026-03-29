@@ -4,19 +4,19 @@ import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.time.Duration;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.TestInfo;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+
 import io.qameta.allure.Allure;
-import com.test.pages.LoginPage;
+
 import com.test.pages.InventoryPage;
+import com.test.pages.LoginPage;
 
 public class BaseTest {
 
-    private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+    private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
     protected LoginPage loginPage;
     protected InventoryPage inventoryPage;
@@ -29,23 +29,18 @@ public class BaseTest {
 
             switch (browser.toLowerCase()) {
                 case "chrome":
-                    ChromeOptions chromeOptions = new ChromeOptions();
-                    localDriver = new RemoteWebDriver(gridUrl, chromeOptions);
+                    localDriver = new RemoteWebDriver(gridUrl, new ChromeOptions());
                     break;
-
                 case "edge":
-                    EdgeOptions edgeOptions = new EdgeOptions();
-                    localDriver = new RemoteWebDriver(gridUrl, edgeOptions);
+                    localDriver = new RemoteWebDriver(gridUrl, new EdgeOptions());
                     break;
-
                 default:
                     throw new RuntimeException("Unknown browser: " + browser);
             }
 
-            Allure.label("browser", browser);
-            Allure.parameter("Browser", browser);
+            localDriver.manage().timeouts().implicitlyWait(Duration.ZERO);
             localDriver.manage().window().maximize();
-            localDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+
             driver.set(localDriver);
 
         } catch (Exception e) {
@@ -54,10 +49,24 @@ public class BaseTest {
     }
 
     protected WebDriver getDriver() {
-        if (driver.get() == null) {
-            throw new RuntimeException("Driver is not initialized. Did you forget to call setUp()?");
+        WebDriver drv = driver.get();
+        if (drv == null) {
+            throw new RuntimeException("Driver not initialized!");
         }
-        return driver.get();
+        return drv;
+    }
+
+    protected void cleanUpDriver() {
+        WebDriver drv = driver.get();
+
+        if (drv != null) {
+            try {
+                drv.quit();
+            } catch (Exception ignored) {}
+            finally {
+                driver.remove();
+            }
+        }
     }
 
     protected void initPages() {
@@ -67,16 +76,15 @@ public class BaseTest {
 
     protected void login() {
         loginPage.open();
-        loginPage.login(
-                System.getProperty("username", "standard_user"),
-                System.getProperty("password", "secret_sauce")
-        );
+        loginPage.login("standard_user", "secret_sauce");
     }
 
     public static void takeScreenshot() {
         try {
-            if (driver.get() != null) {
-                byte[] screenshot = ((TakesScreenshot) driver.get())
+            WebDriver drv = driver.get();
+
+            if (drv != null) {
+                byte[] screenshot = ((TakesScreenshot) drv)
                         .getScreenshotAs(OutputType.BYTES);
 
                 Allure.addAttachment(
@@ -84,16 +92,6 @@ public class BaseTest {
                         new ByteArrayInputStream(screenshot)
                 );
             }
-        } catch (Exception e) {
-            System.out.println("Failed to take screenshot: " + e.getMessage());
-        }
-    }
-
-    @AfterEach
-    void tearDown(TestInfo testInfo) {
-        if (driver.get() != null) {
-            driver.get().quit();
-            driver.remove();
-        }
+        } catch (Exception ignored) {}
     }
 }
