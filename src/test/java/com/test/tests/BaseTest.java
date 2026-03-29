@@ -2,16 +2,13 @@ package com.test.tests;
 
 import java.io.ByteArrayInputStream;
 import java.net.URL;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.TestInfo;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
-
 import io.qameta.allure.Allure;
-
 import com.test.pages.LoginPage;
 import com.test.pages.InventoryPage;
 
