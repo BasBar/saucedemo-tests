@@ -2,9 +2,7 @@ package com.test.pages;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
-
 import io.qameta.allure.Step;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
