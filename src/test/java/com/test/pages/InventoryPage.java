@@ -11,8 +11,6 @@ import java.util.stream.Collectors;
 public class InventoryPage {
 
     private WebDriver driver;
-
-    // CSS selectors (best practice)
     private By items = By.cssSelector(".inventory_item_name");
     private By prices = By.cssSelector(".inventory_item_price");
     private By sortDropdown = By.cssSelector(".product_sort_container");
