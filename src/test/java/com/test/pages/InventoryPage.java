@@ -6,10 +6,13 @@ import org.openqa.selenium.support.ui.Select;
 import io.qameta.allure.Step;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.time.Duration;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class InventoryPage {
 
     private WebDriver driver;
+    private WebDriverWait wait;
     private By items = By.cssSelector(".inventory_item_name");
     private By prices = By.cssSelector(".inventory_item_price");
     private By sortDropdown = By.cssSelector(".product_sort_container");
