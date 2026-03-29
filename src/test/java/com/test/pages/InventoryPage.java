@@ -3,20 +3,13 @@ package com.test.pages;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
 import io.qameta.allure.Step;
-
-import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class InventoryPage {
 
     private WebDriver driver;
-    private WebDriverWait wait;
-
-    // CSS selectors (best practice)
     private By items = By.cssSelector(".inventory_item_name");
     private By prices = By.cssSelector(".inventory_item_price");
     private By sortDropdown = By.cssSelector(".product_sort_container");
