@@ -3,9 +3,7 @@ package com.test.tests;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
 import io.qameta.allure.*;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Epic("Login")
