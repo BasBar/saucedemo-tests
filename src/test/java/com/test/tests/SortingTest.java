@@ -3,19 +3,14 @@ package com.test.tests;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
 import io.qameta.allure.*;
-
 import java.util.*;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Epic("Inventory")
 @Feature("Sorting")
 @ExtendWith(TestListener.class)
 public class SortingTest extends BaseTest {
-
-    // ====== TESTY ======
 
     @Test
     @Story("Sort name ASC")
@@ -89,14 +84,10 @@ public class SortingTest extends BaseTest {
         verifyPriceDesc();
     }
 
-    // ====== COMMON SETUP ======
-
     private void prepareTest() {
         initPages();
         login();
     }
-
-    // ====== ASSERTIONS ======
 
     private void verifyNameAsc() {
         inventoryPage.sortBy("Name (A to Z)");
