@@ -2,11 +2,8 @@ package com.test.tests;
 
 import java.io.ByteArrayInputStream;
 import java.net.URL;
-<<<<<<< HEAD
 import java.time.Duration;
 
-=======
->>>>>>> b422c1bec61bd358d95b95e22972b018a837958e
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.TestInfo;
 import org.openqa.selenium.*;
@@ -24,7 +21,6 @@ public class BaseTest {
     protected LoginPage loginPage;
     protected InventoryPage inventoryPage;
 
-    // ✅ FIX 1: zawsze twórz NOWY driver dla każdego scenariusza
     protected void setUp(String browser) {
         try {
             URL gridUrl = new URL("http://localhost:4444/wd/hub");
@@ -46,15 +42,10 @@ public class BaseTest {
                     throw new RuntimeException("Unknown browser: " + browser);
             }
 
-            // ✅ Allure info
             Allure.label("browser", browser);
             Allure.parameter("Browser", browser);
-
             localDriver.manage().window().maximize();
-
-            // ✅ FIX 2: ważne dla stabilności
             localDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-
             driver.set(localDriver);
 
         } catch (Exception e) {
@@ -74,7 +65,6 @@ public class BaseTest {
         inventoryPage = new InventoryPage(getDriver());
     }
 
-    // ✅ FIX 3: usuwamy hardcode (łatwo później podmienić na config)
     protected void login() {
         loginPage.open();
         loginPage.login(
@@ -83,7 +73,6 @@ public class BaseTest {
         );
     }
 
-    // ✅ FIX 4: bezpieczny screenshot (nie wywali testów)
     public static void takeScreenshot() {
         try {
             if (driver.get() != null) {
