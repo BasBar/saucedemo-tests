@@ -8,12 +8,8 @@ import io.qameta.allure.Step;
 public class LoginPage {
 
     private WebDriver driver;
-
-    // CSS selectors
     private By usernameInput = By.cssSelector("#user-name");
     private By passwordInput = By.cssSelector("#password");
-
-    // XPath example (for requirement)
     private By loginButton = By.xpath("//input[@id='login-button']");
 
     public LoginPage(WebDriver driver) {

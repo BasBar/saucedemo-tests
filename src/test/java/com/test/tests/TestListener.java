@@ -7,8 +7,18 @@ public class TestListener implements TestExecutionExceptionHandler {
 
     @Override
     public void handleTestExecutionException(ExtensionContext context, Throwable throwable) throws Throwable {
-        System.out.println("TEST FAILED -> taking screenshot");
-        BaseTest.takeScreenshot();
+
+        String testName = context.getDisplayName();
+        String thread = Thread.currentThread().getName();
+
+        System.out.println(" TEST FAILED: " + testName + " | Thread: " + thread);
+
+        try {
+            BaseTest.takeScreenshot();
+        } catch (Exception e) {
+            System.out.println("Could not take screenshot: " + e.getMessage());
+        }
+
         throw throwable;
     }
 }

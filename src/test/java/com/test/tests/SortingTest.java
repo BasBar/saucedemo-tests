@@ -15,16 +15,90 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(TestListener.class)
 public class SortingTest extends BaseTest {
 
-    @Story("Sort products by name ascending")
-    @DisplayName("Sort products by name ascending")
+    // ====== TESTY ======
+
     @Test
-    void shouldSortByNameAscending() {
+    @Story("Sort name ASC")
+    @DisplayName("Sort name ASC - Chrome")
+    void sortNameAscChrome() {
+        setUp("chrome");
+        prepareTest();
+        verifyNameAsc();
+    }
 
-        setUp();
+    @Test
+    @Story("Sort name ASC")
+    @DisplayName("Sort name ASC - Edge")
+    void sortNameAscEdge() {
+        setUp("edge");
+        prepareTest();
+        verifyNameAsc();
+    }
 
+    @Test
+    @Story("Sort name DESC")
+    @DisplayName("Sort name DESC - Chrome")
+    void sortNameDescChrome() {
+        setUp("chrome");
+        prepareTest();
+        verifyNameDesc();
+    }
+
+    @Test
+    @Story("Sort name DESC")
+    @DisplayName("Sort name DESC - Edge")
+    void sortNameDescEdge() {
+        setUp("edge");
+        prepareTest();
+        verifyNameDesc();
+    }
+
+    @Test
+    @Story("Sort price ASC")
+    @DisplayName("Sort price ASC - Chrome")
+    void sortPriceAscChrome() {
+        setUp("chrome");
+        prepareTest();
+        verifyPriceAsc();
+    }
+
+    @Test
+    @Story("Sort price ASC")
+    @DisplayName("Sort price ASC - Edge")
+    void sortPriceAscEdge() {
+        setUp("edge");
+        prepareTest();
+        verifyPriceAsc();
+    }
+
+    @Test
+    @Story("Sort price DESC")
+    @DisplayName("Sort price DESC - Chrome")
+    void sortPriceDescChrome() {
+        setUp("chrome");
+        prepareTest();
+        verifyPriceDesc();
+    }
+
+    @Test
+    @Story("Sort price DESC")
+    @DisplayName("Sort price DESC - Edge")
+    void sortPriceDescEdge() {
+        setUp("edge");
+        prepareTest();
+        verifyPriceDesc();
+    }
+
+    // ====== COMMON SETUP ======
+
+    private void prepareTest() {
         initPages();
         login();
+    }
 
+    // ====== ASSERTIONS ======
+
+    private void verifyNameAsc() {
         inventoryPage.sortBy("Name (A to Z)");
 
         List<String> actual = inventoryPage.getItemNames();
@@ -34,16 +108,7 @@ public class SortingTest extends BaseTest {
         assertEquals(expected, actual);
     }
 
-    @Story("Sort products by name descending")
-    @DisplayName("Sort products by name descending")
-    @Test
-    void shouldSortByNameDescending() {
-
-        setUp();
-
-        initPages();
-        login();
-
+    private void verifyNameDesc() {
         inventoryPage.sortBy("Name (Z to A)");
 
         List<String> actual = inventoryPage.getItemNames();
@@ -53,16 +118,7 @@ public class SortingTest extends BaseTest {
         assertEquals(expected, actual);
     }
 
-    @Story("Sort products by price ascending")
-    @DisplayName("Sort products by price ascending")
-    @Test
-    void shouldSortByPriceAscending() {
-
-        setUp();
-
-        initPages();
-        login();
-
+    private void verifyPriceAsc() {
         inventoryPage.sortBy("Price (low to high)");
 
         List<Double> actual = inventoryPage.getItemPrices();
@@ -72,16 +128,7 @@ public class SortingTest extends BaseTest {
         assertEquals(expected, actual);
     }
 
-    @Story("Sort products by price descending")
-    @DisplayName("Sort products by price descending")
-    @Test
-    void shouldSortByPriceDescending() {
-
-        setUp();
-
-        initPages();
-        login();
-
+    private void verifyPriceDesc() {
         inventoryPage.sortBy("Price (high to low)");
 
         List<Double> actual = inventoryPage.getItemPrices();

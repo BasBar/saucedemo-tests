@@ -5,12 +5,10 @@ import java.net.URL;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.TestInfo;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 
 import io.qameta.allure.Allure;
 
@@ -24,9 +22,7 @@ public class BaseTest {
     protected LoginPage loginPage;
     protected InventoryPage inventoryPage;
 
-    protected void setUp() {
-        String browser = System.getProperty("browser", "chrome");
-
+    protected void setUp(String browser) {
         try {
             URL gridUrl = new URL("http://localhost:4444/wd/hub");
 
@@ -43,6 +39,9 @@ public class BaseTest {
             } else {
                 throw new RuntimeException("Unknown browser: " + browser);
             }
+
+            Allure.label("browser", browser);
+            Allure.parameter("Browser", browser);
 
             localDriver.manage().window().maximize();
             driver.set(localDriver);
@@ -71,7 +70,7 @@ public class BaseTest {
                 .getScreenshotAs(OutputType.BYTES);
 
         Allure.addAttachment(
-                "Screenshot on failure",
+                "Screenshot",
                 new ByteArrayInputStream(screenshot)
         );
     }

@@ -13,12 +13,25 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(TestListener.class)
 public class LoginTest extends BaseTest {
 
-    @Story("Successful login")
-    @DisplayName("User can login with valid credentials")
     @Test
-    void shouldLoginSuccessfully() {
+    @Story("Successful login")
+    @DisplayName("Login - Chrome")
+    void shouldLoginChrome() {
 
-        setUp();
+        setUp("chrome");
+
+        initPages();
+        login();
+
+        assertTrue(inventoryPage.isLoaded());
+    }
+
+    @Test
+    @Story("Successful login")
+    @DisplayName("Login - Edge")
+    void shouldLoginEdge() {
+
+        setUp("edge");
 
         initPages();
         login();
@@ -26,5 +39,3 @@ public class LoginTest extends BaseTest {
         assertTrue(inventoryPage.isLoaded());
     }
 }
-
-//assertTrue(false); // to demonstrate screenshot on failure uncomment this line, comment line above and run the test
