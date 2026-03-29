@@ -1,74 +1,106 @@
 # SauceDemo Test Automation Framework
 
-## Project Overview
+## Overview
 
-This project is a test automation framework for the SauceDemo application:
-https://www.saucedemo.com/
+This project is a test automation framework for the SauceDemo application.
+It verifies product sorting functionality and login flow using modern automation practices.
 
-It is built using Java, Selenium, JUnit 5 and Maven with support for:
-
-* parallel execution
-* Selenium Grid
-* Allure reporting
+The framework is built with Selenium, Cucumber (BDD), JUnit 5, and Allure, and supports parallel execution on multiple browsers via Selenium Grid.
 
 ---
 
 ## Tech Stack
 
 * Java 17
-* Maven
-* Selenium 4
+* Selenium WebDriver
+* Cucumber (BDD)
 * JUnit 5
-* Selenium Grid (Docker)
 * Allure Reports
+* Docker + Selenium Grid
+* Maven
 
 ---
 
 ## Features
 
+* Cross-browser testing (Chrome, Edge)
+* Parallel execution using ThreadLocal
+* Selenium Grid integration (Docker)
 * Page Object Model (POM)
-* Parallel test execution (JUnit 5)
-* Cross-browser testing (Chrome and Edge)
-* Selenium Grid support
-* Allure reporting with screenshots on failure
-* ThreadLocal WebDriver
+* BDD scenarios (Cucumber)
+* Allure reporting
+* Automatic screenshots on failure
+* Explicit waits for stability
 
 ---
 
-## Running Tests
+## Test Scenarios
 
+### Sorting tests:
+
+* Sort by Name (A → Z)
+* Sort by Name (Z → A)
+* Sort by Price (Low → High)
+* Sort by Price (High → Low)
+
+### Login tests:
+
+* Successful login on Chrome
+* Successful login on Edge
+
+---
+
+## Project Structure
+
+```id="p6r3kx"
+src
+ ├── main
+ │   └── java
+ │       └── pages
+ ├── test
+ │   ├── java
+ │   │   └── tests
+ │   └── resources
+ │       └── features
 ```
+
+---
+
+## Running Tests (Selenium Grid)
+
+### Start Selenium Grid
+
+```bash id="3y9q2x"
+docker-compose up -d
+```
+
+### Verify Grid
+
+Open:
+http://localhost:4444
+
+---
+
+## Run Tests
+
+```bash id="7a2c5n"
 mvn clean test
 ```
 
 ---
 
-## Selenium Grid (Docker)
+## Allure Report
 
+```bash id="9f4d1m"
+allure serve allure-results
 ```
-docker network create grid
-
-docker run -d -p 4444:4444 --net grid --name selenium-hub selenium/hub
-
-docker run -d --net grid --name chrome-node ^
--e SE_EVENT_BUS_HOST=selenium-hub ^
--e SE_EVENT_BUS_PUBLISH_PORT=4442 ^
--e SE_EVENT_BUS_SUBSCRIBE_PORT=4443 ^
-selenium/node-chrome
-
-docker run -d --net grid --name edge-node ^
--e SE_EVENT_BUS_HOST=selenium-hub ^
--e SE_EVENT_BUS_PUBLISH_PORT=4442 ^
--e SE_EVENT_BUS_SUBSCRIBE_PORT=4443 ^
-selenium/node-edge
-```
-
-Grid UI: http://localhost:4444
 
 ---
 
-## Allure Report
+## Design Decisions
 
-```
-allure serve target/allure-results
-```
+* ThreadLocal WebDriver enables safe parallel execution
+* Page Object Model improves maintainability
+* Cucumber improves readability and business alignment
+* Selenium Grid enables scalable cross-browser execution
+* Allure provides clear reporting and debugging support

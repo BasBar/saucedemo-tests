@@ -15,6 +15,7 @@ public class LoginTest extends BaseTest {
 
     @Test
     @Story("Successful login")
+    @Severity(SeverityLevel.CRITICAL)
     @DisplayName("Login - Chrome")
     void shouldLoginChrome() {
 
@@ -23,11 +24,13 @@ public class LoginTest extends BaseTest {
         initPages();
         login();
 
-        assertTrue(inventoryPage.isLoaded());
+        assertTrue(inventoryPage.isLoaded(),
+                "Inventory page should be visible after login (Chrome)");
     }
 
     @Test
     @Story("Successful login")
+    @Severity(SeverityLevel.CRITICAL)
     @DisplayName("Login - Edge")
     void shouldLoginEdge() {
 
@@ -36,6 +39,7 @@ public class LoginTest extends BaseTest {
         initPages();
         login();
 
-        assertTrue(inventoryPage.isLoaded());
+        assertTrue(inventoryPage.isLoaded(),
+                "Inventory page should be visible after login (Edge)");
     }
 }
