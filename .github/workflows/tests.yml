@@ -26,19 +26,29 @@ jobs:
           docker run -d --net grid -p 4444:4444 --name selenium-hub selenium/hub
           
           docker run -d --net grid --name chrome-node \
+            --shm-size="2g" \
             -e SE_EVENT_BUS_HOST=selenium-hub \
             -e SE_EVENT_BUS_PUBLISH_PORT=4442 \
             -e SE_EVENT_BUS_SUBSCRIBE_PORT=4443 \
             selenium/node-chrome
           
           docker run -d --net grid --name edge-node \
+            --shm-size="2g" \
             -e SE_EVENT_BUS_HOST=selenium-hub \
             -e SE_EVENT_BUS_PUBLISH_PORT=4442 \
             -e SE_EVENT_BUS_SUBSCRIBE_PORT=4443 \
             selenium/node-edge
 
-      - name: Wait for Grid
-        run: sleep 10
+      - name: Wait for Selenium Grid
+        run: |
+          echo "Waiting for Grid..."
+          for i in {1..30}; do
+            if curl -s http://localhost:4444/status | grep '"ready":true'; then
+              echo "Grid ready!"
+              break
+            fi
+            sleep 2
+          done
 
       - name: Run tests
         run: mvn clean test
